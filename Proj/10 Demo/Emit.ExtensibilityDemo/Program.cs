@@ -1,6 +1,8 @@
 ﻿using System;
 using Emit.DependencyExports.Definition;
+using Emit.ExtensibilityDemo.Bootstrap.Tasks;
 using Emit.ExtensibilityDemo.DependencyImports;
+using Emit.ExtensibilityProvider.Bootstrapping;
 using Emit.ExtensibilityProvider.Concrete;
 
 namespace Emit.ExtensibilityDemo
@@ -11,11 +13,23 @@ namespace Emit.ExtensibilityDemo
 
         static void Main()
         {
+            ConfigureViaCode();
             BasicImportSample();
             ConstraintedImportSample();
             BasicManuallyImportedSample();
             ConstraintedManuallyImportedSample();
             Console.ReadKey();
+        }
+        
+        /// <summary>
+        /// Register bootstrap task via code
+        /// </summary>
+        private static void ConfigureViaCode()
+        {
+            var task = new ViaCodeBootstrapTask();
+            task.ExecuteMode = ExecuteMode.AfterBootstrap;
+            task.ExecuteType = ExecuteType.Always;
+            SystemBootstrapper.AddBoostrappingTask(task);
         }
 
         /// <summary>
