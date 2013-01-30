@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CB4D6FAE-46F6-40B6-B249-851BB066607A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Emit.ExtensibilityProvider</RootNamespace>
+    <AssemblyName>Emit.ExtensibilityProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrapping\IBootstrapper.cs" />
+    <Compile Include="Bootstrapping\IBootstrapperTask.cs" />
+    <Compile Include="Concrete\BootstrapperExtensions.cs" />
+    <Compile Include="Concrete\BootstrapperTaskExecution.cs" />
+    <Compile Include="Concrete\SystemBootstrapper.cs" />
+    <Compile Include="Configuration\Base\GenericConfigurationCollection.cs" />
+    <Compile Include="Configuration\Base\GenericConfigurationSection.cs" />
+    <Compile Include="Configuration\Base\LocationAware\FileSystemLocationConfigurationElement.cs" />
+    <Compile Include="Configuration\BootstrapperConfiguration.cs" />
+    <Compile Include="Configuration\BootstrapperTaskConfigurationCollection.cs" />
+    <Compile Include="Configuration\BootstrapperTaskConfigurationElement.cs" />
+    <Compile Include="Configuration\BootstrapperConfigurationElement.cs" />
+    <Compile Include="Extensibility\ConstraintExportAttribute.cs" />
+    <Compile Include="Extensibility\ConstraintImportAttribute.cs" />
+    <Compile Include="Extensibility\ExtensibilityExtensions.cs" />
+    <Compile Include="Helpers\IOHelper.cs" />
+    <Compile Include="Helpers\ReflectionHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Configuration\Base\00 ReadMe.txt" />
+    <Content Include="Extensibility\00 ReadMe.txt" />
+    <Content Include="Helpers\00 ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Configuration\App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
