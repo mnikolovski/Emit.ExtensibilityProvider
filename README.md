@@ -10,6 +10,7 @@ Functionalities:
 - Offers ConstraintExportAttribute and ConstraintImportAttribute for controlling exports/imports via multiple types
 
 ## Bootstrapper Task
+```csharp
     internal class BeforeResolveBootstrapTask : IBootstrapperTask
     {
         public ExecuteType ExecuteType { get; set; }
@@ -23,7 +24,9 @@ Functionalities:
             Console.ResetColor();
         }
     }
+```
 ## Configure via .config
+```xml
     <configuration>
      <configSections>
        <section name="BootstrapperConfiguration" type="Emit.ExtensibilityProvider.Configuration.BootstrapperConfiguration, Emit.ExtensibilityProvider"/>
@@ -38,14 +41,17 @@ Functionalities:
        </bootstrapperTasks>
      </BootstrapperConfiguration>
     </configuration>
+```
 ## Configure via code
+```csharp
     var task = new ViaCodeBootstrapTask();
     task.ExecuteMode = ExecuteMode.AfterBootstrap;
     task.ExecuteType = ExecuteType.Always;
     SystemBootstrapper.AddBoostrappingTask(task);
+```
 ## Show me the code
 Some class exports:
-
+```csharp
     [Export(typeof(IUserController))]
     public class UserControllers : IUserController
     {
@@ -65,9 +71,9 @@ Some class exports:
         public void AddUser(string username){}
         public bool Login(string username, string password){}
     }	
-
+```
 Some class imports:
-
+```csharp
     public class UserService
     {
         [Import]
@@ -79,9 +85,9 @@ Some class imports:
         [ConstraintImport(typeof(IFormsAuthController))]
         public IAuthController FormsAuthController { get; set; }
     }
-	
+```	
 Context fill:
-
+```csharp
     // fill context with imports
     bootstrapper.Execute(userService);
     // return instance that implements IUserController
@@ -90,3 +96,4 @@ Context fill:
     bootstrapper.GetInstance<IAuthController>(new[] { typeof(IWindowsAuthController) })
     // return instance that implements IAuthController and is constrainted by IFormsAuthController
     bootstrapper.GetInstance<IAuthController>(new[] { typeof(IFormsAuthController) }); 
+```
