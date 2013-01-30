@@ -9,6 +9,12 @@ Functionalities:
 - Bootstrapping Tasks before and after instance import
 - Offers ConstraintExportAttribute and ConstraintImportAttribute for controlling exports/imports via multiple types
 
+## Bootstrapper Task
+
+## Configure via .config
+
+## Configure via code
+
 ## Show me the code
 Some class exports:
 
