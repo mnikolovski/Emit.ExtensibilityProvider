@@ -10,11 +10,39 @@ Functionalities:
 - Offers ConstraintExportAttribute and ConstraintImportAttribute for controlling exports/imports via multiple types
 
 ## Bootstrapper Task
+    internal class BeforeResolveBootstrapTask : IBootstrapperTask
+    {
+        public ExecuteType ExecuteType { get; set; }
+        public ExecuteMode ExecuteMode { get; set; }
 
+        public void ExecuteTask()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            var message = string.Format(@"{0}|INFO|Before resolve - one time execution", DateTime.Now);
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
+    }
 ## Configure via .config
-
+    <configuration>
+     <configSections>
+       <section name="BootstrapperConfiguration" type="Emit.ExtensibilityProvider.Configuration.BootstrapperConfiguration, Emit.ExtensibilityProvider"/>
+     </configSections>
+     <BootstrapperConfiguration>
+       <source useBaseDirectory = "true"/>
+       <bootstrapperTasks>
+         <bootstrapperTask name="BootStartedTask"
+                           type="Emit.ExtensibilityDemo.Bootstrap.Tasks.BeforeResolveBootstrapTask, Emit.ExtensibilityDemo"
+                           executeType="Initalize"
+                           executeMode="BeforeBootstrap"/>
+       </bootstrapperTasks>
+     </BootstrapperConfiguration>
+    </configuration>
 ## Configure via code
-
+    var task = new ViaCodeBootstrapTask();
+    task.ExecuteMode = ExecuteMode.AfterBootstrap;
+    task.ExecuteType = ExecuteType.Always;
+    SystemBootstrapper.AddBoostrappingTask(task);
 ## Show me the code
 Some class exports:
 
@@ -54,21 +82,11 @@ Some class imports:
 	
 Context fill:
 
-    public class EntryPointClass
-    {
-      SystemBootstrapper bootstrapper = new SystemBootstrapper();    
-      public void SomeEntryPoint()
-      {
-        // fill context with imports
-    	  bootstrapper.Execute(userService);
-        // return instance that implements IUserController
-    	  bootstrapper.GetInstance<IUserController>(); 
-        // return instance that implements IAuthController and is constrainted by IWindowsAuthController  
-    	  bootstrapper.GetInstance<IAuthController>(new[] { typeof(IWindowsAuthController) })
-    	  // return instance that implements IAuthController and is constrainted by IFormsAuthController
-        bootstrapper.GetInstance<IAuthController>(new[] { typeof(IFormsAuthController) }); 
-      }
-    }
-    
-  
-==========================
+    // fill context with imports
+    bootstrapper.Execute(userService);
+    // return instance that implements IUserController
+    bootstrapper.GetInstance<IUserController>(); 
+    // return instance that implements IAuthController and is constrainted by IWindowsAuthController  
+    bootstrapper.GetInstance<IAuthController>(new[] { typeof(IWindowsAuthController) })
+    // return instance that implements IAuthController and is constrainted by IFormsAuthController
+    bootstrapper.GetInstance<IAuthController>(new[] { typeof(IFormsAuthController) }); 
