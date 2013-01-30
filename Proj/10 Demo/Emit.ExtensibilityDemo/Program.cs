@@ -1,4 +1,5 @@
 ﻿using System;
+using Emit.DependencyExports.Definition;
 using Emit.ExtensibilityDemo.DependencyImports;
 using Emit.ExtensibilityProvider.Concrete;
 
@@ -12,6 +13,8 @@ namespace Emit.ExtensibilityDemo
         {
             BasicImportSample();
             ConstraintedImportSample();
+            BasicManuallyImportedSample();
+            ConstraintedManuallyImportedSample();
             Console.ReadKey();
         }
 
@@ -20,6 +23,7 @@ namespace Emit.ExtensibilityDemo
         /// </summary>
         private static void BasicImportSample()
         {
+            Console.WriteLine("---Running-BasicImportSample---");
             // create the instance
             var userService = new UserService();
             // fill the context's imports
@@ -33,10 +37,40 @@ namespace Emit.ExtensibilityDemo
         /// </summary>
         private static void ConstraintedImportSample()
         {
+            Console.WriteLine("---Running-ConstraintedImportSample---");
             // create the instance
             var userService = new UserService();
             // fill the context's imports
             SystemBootstrapper.Execute(userService);
+            // execute some method...
+            userService.FormsAuthController.Login(@"New user", @"New user");
+            userService.WindowsAuthController.Login(@"New user", @"Passw0rd");
+        }
+
+        /// <summary>
+        /// Show basic MEF manually resolved instance sample
+        /// </summary>
+        private static void BasicManuallyImportedSample()
+        {
+            Console.WriteLine("---Running-BasicManuallyImportedSample---");
+            // resolve an instance
+            var userService = new UserService();
+            userService.UserController = SystemBootstrapper.GetInstance<IUserController>(); 
+            // execute some method...
+            userService.UserController.AddUser(@"New user");             
+        }
+
+        /// <summary>
+        /// Shows constrainted MEF manually resolved instance sample 
+        /// </summary>
+        private static void ConstraintedManuallyImportedSample()
+        {
+            Console.WriteLine("---Running-ConstraintedManuallyImportedSample---");
+            // create the instance
+            var userService = new UserService();
+            userService.UserController = SystemBootstrapper.GetInstance<IUserController>();
+            userService.WindowsAuthController = SystemBootstrapper.GetInstance<IAuthController>(new[] { typeof(IWindowsAuthController) });
+            userService.FormsAuthController = SystemBootstrapper.GetInstance<IAuthController>(new[] { typeof(IFormsAuthController) }); 
             // execute some method...
             userService.FormsAuthController.Login(@"New user", @"New user");
             userService.WindowsAuthController.Login(@"New user", @"Passw0rd");
